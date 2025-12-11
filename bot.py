@@ -10,16 +10,16 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = commands.Bot(command_prefix=">", intents=intents)
 
-token = os.getenv("TOKEN")
+token = os.getenv('TOKEN')
 
-guild = discord.Object(id=os.getenv("TEST_ID"))
+guild = discord.Object(id=1391210266884309174)
 
 @client.event
 async def on_ready():
     print("Logged in as a bot {0.user}".format(client))
 
-@client.hybrid_command(name="test", guild=guild, description="no descs", with_app_command=True)
-async def test(ctx):
-    await ctx.send("This is a hybrid command!")
+@client.command()
+async def link(ctx, arg):
+    await ctx.send(arg)
 
 client.run(token)
