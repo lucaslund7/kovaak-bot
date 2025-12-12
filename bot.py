@@ -35,8 +35,44 @@ async def on_guild_join(guild):
 
 
 @client.command()
-async def link(ctx, arg):
-    await ctx.send(arg)
+async def link(ctx, *, arg: str = None):
+    if arg == None:
+        await ctx.send("```Usage: >link <Kovaak's Username>```")
+        return
+    guild_id = str(ctx.guild.id)
+    discord_id = str(ctx.author.id)
+    discord_name = ctx.author.name
+    kovaak_name = arg
+    links = data[guild_id]["links"]
+    if discord_id not in links:
+        links[discord_id] = {
+            "discord_name": discord_name,
+            "kovaaks_name": kovaak_name
+        }
+        save_data()
+        await ctx.send("```Linked Discord user " + discord_name + " to KovaaK's user "+ arg + "```")
+    else:
+        await ctx.send("```Discord user already has KovaaK's account linked\nUse >relink instead to confirm```")
+
+@client.command()
+async def relink(ctx, *, arg: str = None):
+    if arg == None:
+        await ctx.send("```Usage: >relink <Kovaak's Username>```")
+        return
+    guild_id = str(ctx.guild.id)
+    discord_id = str(ctx.author.id)
+    discord_name = ctx.author.name
+    kovaak_name = arg
+    links = data[guild_id]["links"]
+    if discord_id in links:
+        links[discord_id] = {
+            "discord_name": discord_name,
+            "kovaaks_name": kovaak_name
+        }
+        save_data()
+        await ctx.send("```Linked Discord user " + discord_name + " to KovaaK's user "+ arg + "```")
+    else:
+        await ctx.send("```Discord user doesn't have KovaaK's account linked\nUse >link instead```")
 
 def check_data():
     if path.exists():
