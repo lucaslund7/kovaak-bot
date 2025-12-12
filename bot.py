@@ -74,6 +74,17 @@ async def relink(ctx, *, arg: str = None):
     else:
         await ctx.send("```Discord user doesn't have KovaaK's account linked\nUse >link instead```")
 
+@client.command()
+async def rs(ctx):
+    try:
+        user = data[str(ctx.guild.id)]["links"][str(ctx.author.id)]
+    except:
+        await ctx.send("```User not found\nTry linking first with >link <Kovaak's Username>```")
+        return
+    discord_name = user["discord_name"]
+    kovaak_name = user["kovaaks_name"]
+    await ctx.send("```Getting recent scores for " + kovaak_name + "```")
+
 def check_data():
     if path.exists():
         print("Data file found")
